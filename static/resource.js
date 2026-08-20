@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const apiKey = localStorage.getItem('cw_api_key') || '';
         
         if (!apiKey || apiKey.includes('PASTE-YOUR-REAL')) {
-            loadingDiv.innerHTML = '<p style="color:red; font-weight:bold;">Error: Please configure your API key in the AI Advisor page to generate personalized resources.</p>';
+            loadingDiv.innerHTML = '<p style="color:red; font-weight:bold;">Error: Please configure your API key in the <a href="/settings">Settings</a> page to generate personalized resources.</p>';
         } else {
             fetch('/api/resources/recommend', {
                 method: 'POST',

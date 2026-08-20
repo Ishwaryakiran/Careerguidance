@@ -16,10 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loadingText = document.getElementById('loadingText');
     const assessmentContent = document.getElementById('assessmentContent');
 
-    // Load settings from localStorage when page loads
-    if (localStorage.getItem('cw_api_url')) document.getElementById('api_url').value = localStorage.getItem('cw_api_url');
-    if (localStorage.getItem('cw_model_name')) document.getElementById('model_name').value = localStorage.getItem('cw_model_name');
-    if (localStorage.getItem('cw_api_key')) document.getElementById('api_key').value = localStorage.getItem('cw_api_key');
+    // Settings are now handled exclusively on the Settings page
 
     // Restore active assessment state if it exists
     const savedQuestions = localStorage.getItem('cw_saved_questions');
@@ -38,30 +35,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Helper to get current API config
     function getApiConfig() {
         return {
-            api_url: document.getElementById("api_url") ? document.getElementById("api_url").value.trim() : "",
-            model_name: document.getElementById("model_name") ? document.getElementById("model_name").value.trim() : "",
-            api_key: document.getElementById("api_key") ? document.getElementById("api_key").value.trim() : "",
+            api_url: localStorage.getItem('cw_api_url') || "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+            model_name: localStorage.getItem('cw_model_name') || "gemini-3.6-flash",
+            api_key: localStorage.getItem('cw_api_key') || "",
             student_needs: document.getElementById("studentNeeds") ? document.getElementById("studentNeeds").value.trim() : ""
         };
     }
-
-    // Save settings and retry fetching questions if needed
-    window.saveAssessmentSettings = function() {
-        const config = getApiConfig();
-        localStorage.setItem('cw_api_url', config.api_url);
-        localStorage.setItem('cw_model_name', config.model_name);
-        localStorage.setItem('cw_api_key', config.api_key);
-        
-        document.getElementById('apiModal').style.display = 'none';
-        
-        // If we are already waiting for key, we can auto-start
-        if (loadingIndicator.style.display === 'block' && questions.length === 0) {
-            fetchQuestions();
-        }
-    };
 
     // Start assessment from personalization screen
     document.getElementById('startAssessmentBtn').addEventListener('click', function() {
@@ -89,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const config = getApiConfig();
         
         if (!config.api_key || config.api_key.includes("PASTE-YOUR-REAL")) {
-            loadingText.innerHTML = `Please provide a valid API key in the <a href="#" onclick="document.getElementById('apiModal').style.display='flex'">⚙️ API Settings</a> first.`;
+            loadingText.innerHTML = `Please provide a valid API key in the <a href="/settings">⚙️ Settings</a> page first.`;
             document.querySelector('#loadingIndicator div').style.display = 'none';
             return;
         }

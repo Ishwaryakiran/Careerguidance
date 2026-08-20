@@ -25,6 +25,10 @@ def assessment():
 def resources():
     return render_template('resources.html')
 
+@app.route('/settings')
+def settings():
+    return render_template('settings.html')
+
 
 # 🌟 API ROUTE FOR ASSESSMENT QUESTIONS
 @app.route('/api/assessment/questions', methods=['POST'])

@@ -60,14 +60,15 @@ function sendMessage(text = null) {
 
   messages.scrollTop = messages.scrollHeight;
 
-  const apiUrl = document.getElementById("api_url") ? document.getElementById("api_url").value.trim() : "";
-  const modelName = document.getElementById("model_name") ? document.getElementById("model_name").value.trim() : "";
-  const apiKey = document.getElementById("api_key") ? document.getElementById("api_key").value.trim() : "";
+  const apiUrl = localStorage.getItem('cw_api_url') || "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
+  const modelName = localStorage.getItem('cw_model_name') || "gemini-3.6-flash";
+  const apiKey = localStorage.getItem('cw_api_key') || "";
 
-  // Save to localStorage for cross-page persistence
-  localStorage.setItem('cw_api_url', apiUrl);
-  localStorage.setItem('cw_model_name', modelName);
-  localStorage.setItem('cw_api_key', apiKey);
+  if (!apiKey) {
+      botMsg.innerText = "Error: API Key missing.";
+      alert("Please configure your API Key in the Settings page before chatting.");
+      return;
+  }
 
   fetch("http://127.0.0.1:5000/api", {
     method: "POST",
@@ -99,10 +100,7 @@ document.getElementById("input").addEventListener("keydown", function(e) {
 });
 
 // Load settings from localStorage when page loads
-document.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('cw_api_url')) document.getElementById('api_url').value = localStorage.getItem('cw_api_url');
-    if (localStorage.getItem('cw_model_name')) document.getElementById('model_name').value = localStorage.getItem('cw_model_name');
-    if (localStorage.getItem('cw_api_key')) document.getElementById('api_key').value = localStorage.getItem('cw_api_key');
+    // Settings are now handled exclusively on the Settings page
     
     // Check if we need to clear the hardcoded welcome message from HTML
     const messages = document.getElementById("messages");

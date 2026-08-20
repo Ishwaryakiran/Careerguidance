@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Career Weave - API Settings</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+        background-color: #f9f9f9;
+    }
+    .settings-container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    .settings-container h2 {
+        color: #4CAF50;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+    }
+    .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-family: monospace;
+        font-size: 14px;
+    }
+    .save-btn {
+        width: 100%;
+        padding: 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .save-btn:hover {
+        background-color: #45a049;
+    }
+    .alert {
+        display: none;
+        padding: 10px;
+        background-color: #d4edda;
+        color: #155724;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+        <h1 class="logo">Career Weave</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('advisor') }}">AI Advisor</a></li>
+                <li><a href="{{ url_for('assessment') }}">Assessment</a></li>
+                <li><a href="{{ url_for('resources') }}">Resources</a></li>
+                <li><a href="{{ url_for('settings') }}" class="active">Settings</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-nav-toggle">&#9776;</div>
+    </div>
+    <div class="sidebar">
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('advisor') }}">AI Advisor</a></li>
+            <li><a href="{{ url_for('assessment') }}">Assessment</a></li>
+            <li><a href="{{ url_for('resources') }}">Resources</a></li>
+            <li><a href="{{ url_for('settings') }}" class="active">Settings</a></li>
+        </ul>
+    </div>
+    <div class="overlay"></div>
+  </header>
+  
+  <div class="container">
+      <div class="settings-container">
+          <h2>⚙️ API Settings</h2>
+          <div id="saveAlert" class="alert">Settings saved successfully!</div>
+          
+          <div class="form-group">
+              <label>API Base URL</label>
+              <input type="text" id="api_url" value="https://generativelanguage.googleapis.com/v1beta/openai/chat/completions">
+          </div>
+          
+          <div class="form-group">
+              <label>Model Name</label>
+              <input type="text" id="model_name" value="gemini-3.6-flash">
+          </div>
+          
+          <div class="form-group">
+              <label>API Key <span style="color: red;">*</span></label>
+              <input type="password" id="api_key" placeholder="Paste your Gemini API Key here...">
+          </div>
+          
+          <button class="save-btn" onclick="saveSettings()">Save Configuration</button>
+      </div>
+  </div>
+
+  <script>
+      // Load existing settings
+      document.addEventListener("DOMContentLoaded", () => {
+          if (localStorage.getItem('cw_api_key')) {
+              document.getElementById('api_key').value = localStorage.getItem('cw_api_key');
+          }
+          if (localStorage.getItem('cw_api_url')) {
+              document.getElementById('api_url').value = localStorage.getItem('cw_api_url');
+          }
+          if (localStorage.getItem('cw_model_name')) {
+              document.getElementById('model_name').value = localStorage.getItem('cw_model_name');
+          }
+      });
+
+      function saveSettings() {
+          const apiKey = document.getElementById('api_key').value.trim();
+          const apiUrl = document.getElementById('api_url').value.trim();
+          const modelName = document.getElementById('model_name').value.trim();
+          
+          if (!apiKey) {
+              alert("Please enter an API Key!");
+              return;
+          }
+          
+          localStorage.setItem('cw_api_key', apiKey);
+          localStorage.setItem('cw_api_url', apiUrl);
+          localStorage.setItem('cw_model_name', modelName);
+          
+          const alertBox = document.getElementById('saveAlert');
+          alertBox.style.display = 'block';
+          setTimeout(() => {
+              alertBox.style.display = 'none';
+          }, 3000);
+      }
+      
+      // Mobile sidebar logic
+      const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.querySelector('.overlay');
+
+      if (mobileNavToggle) {
+          mobileNavToggle.addEventListener('click', () => {
+              sidebar.classList.add('open');
+              overlay.classList.add('active');
+          });
+      }
+
+      if (overlay) {
+          overlay.addEventListener('click', () => {
+              sidebar.classList.remove('open');
+              overlay.classList.remove('active');
+          });
+      }
+  </script>
+</body>
+</html>
