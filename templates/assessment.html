@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Weave-Assessment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">Career Weave</h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('advisor') }}">AI Advisor</a></li>
+                    <li><a href="{{ url_for('assessment') }}">Assessment</a></li>
+                    <li><a href="{{ url_for('resources') }}">Resources</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-nav-toggle">&#9776;</div>
+        </div>
+        <div class="sidebar">
+            <ul>
+                <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
+                <li><a href="{{ url_for('advisor') }}">AI Advisor</a></li>
+                <li><a href="{{ url_for('assessment') }}">Assessment</a></li>
+                <li><a href="{{ url_for('resources') }}">Resources</a></li>
+            </ul>
+        </div>
+        <div class="overlay"></div>
+    </header>
+
+    <!-- Settings Button -->
+    <button onclick="document.getElementById('apiModal').style.display='flex'" style="position: absolute; top: 80px; right: 20px; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; z-index: 100; transition: 0.3s;">
+      ⚙️ API Settings
+    </button>
+
+    <!-- API Settings Modal -->
+    <div id="apiModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px);">
+      <div style="background: rgba(25, 25, 35, 0.95); padding: 30px; border-radius: 15px; width: 400px; color: white; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h3 style="margin: 0; color: #4abdff;">⚙️ API Configuration</h3>
+          <span onclick="document.getElementById('apiModal').style.display='none'" style="cursor: pointer; font-size: 20px; transition: 0.2s;">&times;</span>
+        </div>
+        
+        <label style="display: block; margin-bottom: 5px; font-size: 14px; color: #aaa;">API Base URL</label>
+        <input type="text" id="api_url" value="https://generativelanguage.googleapis.com/v1beta/openai/chat/completions" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #444; background: #222; color: white; box-sizing: border-box; font-family: monospace;">
+        
+        <label style="display: block; margin-bottom: 5px; font-size: 14px; color: #aaa;">Model Name</label>
+        <input type="text" id="model_name" value="gemini-3.6-flash" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #444; background: #222; color: white; box-sizing: border-box; font-family: monospace;">
+        
+        <label style="display: block; margin-bottom: 5px; font-size: 14px; color: #aaa;">API Key <span style="color: red;">*</span></label>
+        <input type="password" id="api_key" value="AIzaSy-PASTE-YOUR-REAL-GEMINI-KEY-HERE" placeholder="Paste your Gemini API Key here..." style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #4abdff; background: #222; color: white; box-sizing: border-box; box-shadow: 0 0 8px rgba(74, 189, 255, 0.3);">
+        
+        <button onclick="saveAssessmentSettings()" style="width: 100%; padding: 12px; background: #4abdff; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px;">Save Settings</button>
+      </div>
+    </div>
+
+    <main class="assessment-container">
+        <div class="container">
+            <h1>Career Assessment</h1>
+            <p>Answer these AI-generated questions honestly to get personalized career recommendations based on your interests, values, and preferred working style.</p>
+            
+            <div id="personalizationScreen" style="display: none; background: white; padding: 40px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #eaeaea; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);">
+                <h3 style="color: var(--primary-color); margin-bottom: 12px; margin-top: 0; font-size: 1.5rem;">Personalize Your Assessment <span style="font-weight: normal; font-size: 1.1rem; color: #888;">(Optional)</span></h3>
+                <p style="margin-bottom: 20px; font-size: 1.05rem; color: #555;">Tell us a bit about your current interests, strengths, or what you are studying so the AI can tailor the questions specifically to you!</p>
+                <textarea id="studentNeeds" rows="4" placeholder="e.g. I love coding and technology, but I also enjoy helping people..." style="width: 100%; padding: 16px; border-radius: 8px; border: 2px solid #eaeaea; background: #fdfdfd; color: #333; margin-bottom: 25px; resize: vertical; font-family: inherit; font-size: 1rem; transition: border-color 0.3s ease;"></textarea>
+                <button id="startAssessmentBtn" class="btn primary" style="width: 100%; padding: 14px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Start Assessment</button>
+            </div>
+
+            <div id="loadingIndicator" style="text-align: center; padding: 60px 20px; color: #333; display: none;">
+                <h3 id="loadingText" style="color: var(--primary-color); margin-bottom: 25px; font-size: 1.4rem;">Generating your personalized assessment...</h3>
+                <div style="display: inline-block; width: 60px; height: 60px; border: 5px solid #f0f0f0; border-radius: 50%; border-top-color: var(--primary-color); animation: spin 1s ease-in-out infinite;"></div>
+                <style>
+                    @keyframes spin { to { transform: rotate(360deg); } }
+                    #studentNeeds:focus { outline: none; border-color: var(--primary-color); }
+                </style>
+            </div>
+            
+            <div id="assessmentContent" style="display: none;">
+                <div class="assessment-progress">
+                <div class="progress-bar">
+                    <div class="progress" id="progressBar"></div>
+                </div>
+                <span id="progressText" style="padding-right: 10px;">Question 1 of 8</span>
+                <span id="progressPercent"> 19%</span>
+            </div>
+            
+            <div class="assessment-question">
+                <h2 id="questionText">Which activities do you enjoy the most?</h2>
+                <div class="options" id="optionsContainer">
+                    <!-- Options will be inserted here by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="assessment-navigation">
+                <button class="btn secondary" id="prevButton" disabled>Previous</button>
+                <button class="btn primary" id="nextButton">Next</button>
+            </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>Career Weave</h3>
+                    <p>Guiding students toward fulfilling career paths through AI-powered recommendations and personalized assessments.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
+                        <li><a href="{{ url_for('advisor') }}">AI Advisor</a></li>
+                        <li><a href="{{ url_for('assessment') }}">Assessment</a></li>
+                        <li><a href="{{ url_for('resources') }}">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="footer-resources">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Career Guides</a></li>
+                        <li><a href="#">Career Videos</a></li>
+                        <li><a href="#">Articles</a></li>
+                        <li><a href="#">Career Tools</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>Email: support@futurepath.edu</li>
+                        <li>Phone: +1 (555) 123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 FuturePath. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='assessment.js') }}"></script>
+
+</body>
+</html>

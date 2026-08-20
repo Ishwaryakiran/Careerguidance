@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Waeve</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">Career Weave</h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('advisor') }}">AI Advisor</a></li>
+                    <li><a href="{{ url_for('assessment') }}">Assessment</a></li>
+                    <li><a href="{{ url_for('resources') }}">Resources</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-nav-toggle">&#9776;</div>
+        </div>
+        <div class="sidebar">
+            <ul>
+                <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
+                <li><a href="{{ url_for('advisor') }}">AI Advisor</a></li>
+                <li><a href="{{ url_for('assessment') }}">Assessment</a></li>
+                <li><a href="{{ url_for('resources') }}">Resources</a></li>
+            </ul>
+        </div>
+        <div class="overlay"></div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Discover Your Ideal Career Path</h2>
+            <p>Our AI-powered platform helps students explore career options based on their unique skills, interests, and academic strengths. Start your journey today.</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('advisor') }}" class="btn primary">Chat with AI Advisor</a>
+                <a href="{{ url_for('assessment') }}" class="btn secondary">Take Assessment</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonial">
+        <div class="container">
+            <div class="testimonial-text">
+                <p>"I'm confused about which career to pursue after high school..."</p>
+                <p>"Based on your interests in science and problem-solving, have you considered exploring careers in biomedical engineering?"</p>
+                <p>"Tell me more about biomedical engineering and what skills I need."</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2>How We Help You Find Your Path</h2>
+            <p>Our platform combines AI technology with career expertise to guide you toward a fulfilling professional future.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>AI Career Advisor</h3>
+                    <p>Chat with our AI advisor to explore career options based on your unique profile and get personalized recommendations.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Skill Assessment</h3>
+                    <p>Discover your strengths and aptitudes through comprehensive assessments designed to match you with suitable career paths.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Career Community</h3>
+                    <p>Connect with peers and professionals who share your interests and can provide insights into various career paths.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Resource Library</h3>
+                    <p>Access a wealth of articles, videos, and guides about different careers, educational pathways, and industry trends.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <p>Our streamlined process makes career exploration simple and effective.</p>
+
+            <div class="steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <h3>Take the Assessment</h3>
+                    <p>Complete our comprehensive assessment to identify your skills, interests, and values that align with potential career paths.</p>
+                </div>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <h3>Chat with AI Advisor</h3>
+                    <p>Discuss your assessment results with our AI career advisor to explore recommended paths and get answers to your questions.</p>
+                </div>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <h3>Explore Resources</h3>
+                    <p>Dive into our curated resources to learn more about specific careers, required education, and industry insights.</p>
+                </div>
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <h3>Develop Action Plan</h3>
+                    <p>Create a personalized action plan to work toward your chosen career path with concrete next steps.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  
+
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Discover Your Perfect Career?</h2>
+            <p>Take the first step toward your ideal future. Our AI-powered platform is here to guide you every step of the way.</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('advisor') }}" class="btn primary">Talk to AI Advisor</a>
+                <a href="{{ url_for('assessment') }}" class="btn secondary">Start Assessment</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>Career Weave</h3>
+                    <p>Guiding students toward fulfilling career paths through AI-powered recommendations and personalized assessments.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
+                        <li><a href="{{ url_for('advisor') }}">AI Advisor</a></li>
+                        <li><a href="{{ url_for('assessment') }}">Assessment</a></li>
+                        <li><a href="{{ url_for('resources') }}">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="footer-resources">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Career Guides</a></li>
+                        <li><a href="#">Career Videos</a></li>
+                        <li><a href="#">Articles</a></li>
+                        <li><a href="#">Career Tools</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>Email: support@futurepath.edu</li>
+                        <li>Phone: +1 (555) 123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 FuturePath. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+ 
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+
+</body>
+</html>
