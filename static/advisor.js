@@ -99,9 +99,7 @@ document.getElementById("input").addEventListener("keydown", function(e) {
   }
 });
 
-// Load settings from localStorage when page loads
-    // Settings are now handled exclusively on the Settings page
-    
+document.addEventListener('DOMContentLoaded', () => {
     // Check if we need to clear the hardcoded welcome message from HTML
     const messages = document.getElementById("messages");
     if (localStorage.getItem('cw_chat_history')) {
@@ -109,3 +107,22 @@ document.getElementById("input").addEventListener("keydown", function(e) {
         renderChatHistory();
     }
 });
+
+// Mobile Nav Toggle
+const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+const sidebar = document.querySelector('.sidebar');
+const overlay = document.querySelector('.overlay');
+
+if (mobileNavToggle) {
+    mobileNavToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+    });
+}
+
+if (overlay) {
+    overlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+    });
+}

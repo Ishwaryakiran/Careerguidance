@@ -476,7 +476,8 @@ footer {
 @media (max-width: 768px) {
   .chatbox {
     width: 95%;
-    height: 80vh;
+    height: calc(100vh - 120px);
+    margin: 10px auto;
   }
 
   header h1 {
@@ -521,7 +522,9 @@ footer {
 }
 /* Assessment Page Styles */
 .assessment-container {
-    padding: 60px 0;
+    padding: 40px 0;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 .assessment-progress {

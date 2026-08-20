@@ -24,6 +24,7 @@
         <nav>
             <ul>
                 <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('advisor') }}" class="active">AI Advisor</a></li>
                 <li><a href="{{ url_for('assessment') }}">Assessment</a></li>
                 <li><a href="{{ url_for('resources') }}">Resources</a></li>
                 <li><a href="{{ url_for('settings') }}">Settings</a></li>
@@ -33,7 +34,8 @@
     </div>
     <div class="sidebar">
         <ul>
-            <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('advisor') }}" class="active">AI Advisor</a></li>
             <li><a href="{{ url_for('assessment') }}">Assessment</a></li>
             <li><a href="{{ url_for('resources') }}">Resources</a></li>
             <li><a href="{{ url_for('settings') }}">Settings</a></li>
